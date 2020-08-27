@@ -5,11 +5,9 @@ namespace MemberAnalyzer
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Startup()
         {
-            static void Startup()
-        {
-           //debug code here
+        //debug code here
             
         }
         static int Main(string[] args)
@@ -20,7 +18,6 @@ namespace MemberAnalyzer
                 .Run(args);
             
             //return 0;
-        }
         }
     }
 }
