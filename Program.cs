@@ -10,16 +10,16 @@ namespace MemberAnalyzer
         {
         //debug code here
         var m = new MainEntry();
-            m.DeserializeAndSerialize("C:/Users/Reimu/source/repos/MemberAnalyzer/ToProcess/Test01");
+            m.DeserializeAndSerialize("C:/Users/Reimu/Documents/New Text Document.txt");
         }
         static int Main(string[] args)
         {
-            //Startup();
-            return new AppRunner<MainEntry>()
-                .UseDefaultMiddleware()
-                .Run(args);
+            Startup();
+            //return new AppRunner<MainEntry>()
+              //  .UseDefaultMiddleware()
+                //.Run(args);
             
-            //return 0;
+            return 0;
         }
     }
 }
