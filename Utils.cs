@@ -1,12 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Configuration;
 using System.Text.RegularExpressions;
-using System.Text;
 
 namespace MemberAnalyzer.Util
 {
+    [Serializable()]
+    public class QMember
+    {
+        public QMember(string Nick, string CardName, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
+        {
+            this.Nick = Nick;
+            this.CardName = CardName;
+            this.ID = ID;
+            this.DateJoined = DateJoined;
+            this.DateLastSpeak = DateLastSpeak;
+            this.Gender = Gender;
+        }
+        
+        public QMember()
+        {
+
+        }
+
+        public string Nick { get; set; }
+        public string CardName { get; set; }
+        public string ID { get; set; }
+        public Gender Gender { get; set; }
+        public string DateJoined { get; set; }
+        public string DateLastSpeak { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,Female,Undefined
+    }
+
     public class Setting
     {
         public Setting(string key, string value,string description)
@@ -189,8 +220,86 @@ namespace MemberAnalyzer.Util
             Console.ForegroundColor = preForegroundColor;
         }
 
+        public static IEnumerable<List<string>> RawMemberListSlicer(String path)
+        {
+            int count = 2;
+            var ls = new List<string>(Util.ReadFrom(path));
+            var result = new List<string>();
+            foreach (var line in ls)
+            {
+                if (line=="1\t")
+                {
+                    continue;
+                }
 
+                if (line==count+"\t")
+                {
+                    count ++;
+                    yield return result;
+                    result.Clear();
+                }else
+                {
+                    result.Add(line);
+                    continue;
+                }
+            }
+        }
+
+        private static Gender GetGender(string str)
+        {
+            return str switch
+            {
+                "男" => Gender.Male,
+                "女" => Gender.Female,
+                _ => Gender.Undefined,
+            };
+        }
+
+        public static QMember MemberStrParser(List<string> lines)
+        {
+            try
+            {
+                
+                if (lines.Count == 3)
+                {
+                    //Have a CardName
+                    string nick, cardName, dtJoin, dtSpk, id, gender;
+                    nick = lines[0];
+                    cardName = lines[1];
+                    id = lines[2].Split('\t')[0];
+                    gender = lines[2].Split('\t')[1];
+                    dtJoin = lines[2].Split('\t')[3];
+                    dtSpk = lines[2].Split('\t')[4];
+                    return new QMember(nick, cardName, id, dtJoin, dtSpk, GetGender(gender));
+
+                }else if(lines.Count == 2)
+                {
+                    //Haven't set CardName
+                    string nick, dtJoin, dtSpk, id, gender;
+                    nick = lines[0];
+                    id = lines[1].Split('\t')[0];
+                    gender = lines[1].Split('\t')[1];
+                    dtJoin = lines[1].Split('\t')[3];
+                    dtSpk = lines[1].Split('\t')[4];
+                    return new QMember(nick, null, id, dtJoin, dtSpk, GetGender(gender));
+                }else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (System.Exception)
+            {
+                throw new Exception("Sliced Member Info incomplete, check the \"ToProcess\" file");
+            }
+        }
+
+        public static IEnumerable<QMember> GetMembers(string path)
+        {
+            foreach (var item in RawMemberListSlicer(path))
+            {
+                yield return MemberStrParser(item);
+            }
+        }
     }
-
 
 }

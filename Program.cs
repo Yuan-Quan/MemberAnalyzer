@@ -1,6 +1,7 @@
 ﻿using System;
 using CommandDotNet;
 
+
 namespace MemberAnalyzer
 {
     class Program
@@ -8,7 +9,8 @@ namespace MemberAnalyzer
         static void Startup()
         {
         //debug code here
-            
+        var m = new MainEntry();
+            m.DeserilizeAndSerilize("C:/Users/Reimu/source/repos/MemberAnalyzer/ToProcess/Test01");
         }
         static int Main(string[] args)
         {

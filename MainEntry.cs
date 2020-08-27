@@ -90,4 +90,130 @@ public class MainEntry
             }
         }
     }
+
+    [Command(Name = "deserilize",
+    Usage = "deserilize [path]\nexample: deserialize ~/ToProcess.txt",
+    Description = "Deserilize text copid from QQ web, then serilize them into a xml file",
+    ExtendedHelpText = "Deserilize text copid from QQ web, then serilize them into a xml file.\nfile:\tstring@path\tplain text file you want to deserilize\nsave:\tstring@path\twhere do you want to save serilized xml file(current directory by default)")]
+    public void DeserilizeAndSerilize(
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "Plaintext file you want to deserilize")] 
+        string orgPath,
+
+        [Option(LongName = "save", ShortName = "s", 
+        Description = "Whrer to save serilized xml file(current directory by default)")] 
+        string dstPath = null
+        )
+    {
+        if (dstPath == null)
+        {
+            dstPath = Directory.GetCurrentDirectory();
+        }
+
+        var members = new List<QMember>(Util.GetMembers(orgPath));
+        
+        preForegroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("text file deserilized successfully!!");
+        Console.ForegroundColor = preForegroundColor;
+        
+        if (File.Exists(Path.Combine(dstPath, "Members.xml")))
+        {
+            //file already exists
+
+            Console.Write($"{Path.Combine(dstPath, "Members.xml")} already exitsts, ");
+
+            Console.WriteLine("\n");
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("[1]SKIP:");
+            Console.ForegroundColor = preForegroundColor;
+            Console.Write(" break this opreation.");
+            Console.WriteLine();
+
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[2]DELETE:");
+            Console.ForegroundColor = preForegroundColor;
+            Console.Write(" will DELETE it.");
+            Console.WriteLine();
+
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("[3]OVERWRITE:");
+            Console.ForegroundColor = preForegroundColor;
+            Console.Write(" will REPLACE it.");
+            Console.WriteLine();
+
+            while (true)
+            {
+
+                Console.Write("Select a option -> ");
+
+                if (Int32.TryParse(Console.ReadLine(), out int result))
+                {
+                    switch (result)
+                    {
+                        case 2:
+                            DeleteExist();
+                            return;
+                        case 1:
+                            Console.WriteLine("will stop opreation 'Serilization'.");
+                            return;
+                        case 3:
+                            DeleteExist();
+                            GenerateXML();
+                            return;
+                        default:
+                            Console.WriteLine("No this option!!");
+                            continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Not a valid input!!");
+                    continue;
+                }
+
+            }
+        }
+        else
+        {
+            //no exist file
+            GenerateXML();
+            return;
+        }
+
+        void GenerateXML()
+        {
+            using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
+            {
+                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
+                s.Serialize(fs, members);
+            }
+            
+            System.Console.WriteLine();
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
+            Console.ForegroundColor = preForegroundColor;
+        }
+
+        void DeleteExist()
+        {
+            Console.Write($"Will ");
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("DELETE");
+            Console.ForegroundColor = preForegroundColor;
+            Console.Write($"{Path.Combine(dstPath, "Members.xml")}");
+
+            File.Delete(Path.Combine(dstPath, "Members.xml"));
+
+            preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nDone!");
+            Console.ForegroundColor = preForegroundColor;
+        }
+    }
 }
