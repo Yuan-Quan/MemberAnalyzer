@@ -227,12 +227,12 @@ namespace MemberAnalyzer.Util
             var result = new List<string>();
             foreach (var line in ls)
             {
-                if (line=="1\t")
+                if (line=="1\t"||line=="\t1\t")
                 {
                     continue;
                 }
 
-                if (line==count+"\t")
+                if ((line==count+"\t")||(line=="\t"+count+"\t"))
                 {
                     count ++;
                     yield return result;
