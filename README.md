@@ -1,6 +1,6 @@
 <!--
 *** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better, please fork the repo and create a pull request or simply open
+*** make this better, please fork the MemberAnalyzer and create a pull request or simply open
 *** an issue with the tag "enhancement".
 *** Thanks again! Now go create something AMAZING! :D
 ***
@@ -27,7 +27,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+<!--[![LinkedIn][linkedin-shield]][linkedin-url]-->
 
 
 
@@ -35,7 +35,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Yuan-Quan/MemberAnalyzer">
-    <img src="images/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="images/LOGO.jpg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">MEMBER ANALYZER</h3>
@@ -96,26 +96,41 @@
 ### Prerequisites
 
 *需要先安装.NetCore 3.1的运行环境
+  
 __[下载运行环境](https://dotnet.microsoft.com/download)__
-
+  
 下载完了吗? 安装好了吗? 我等你...
-
+  
 *需要一个Console来进行指令行下的操作
 选一个自己喜欢的就行, 什么powershell, gitbash都可以
 
 ### Installation Guide for Windows
 什么? 你想用Linux, 自己编译一下吧
-
+  
 [下载最新版本的本程序](https://github.com/Yuan-Quan/MemberAnalyzer/releases)
 解压到你喜欢的目录.
 为使得在任何目录都可以使用, 请把本文件夹的地址[加入PATH环境变量](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
-
-安装成功之后, 在你的终端中键入
-```bash
-$ MemberAnalyzer.exe
-```
+ 
+安装成功之后, 在你的终端中键入 
+```bash 
+$ MemberAnalyzer.exe 
+``` 
 应该会出现帮助的内容:
-![DeploySucces](/images/DeploySucces.png)
+```bash
+Usage: MemberAnalyzer.exe [command] [options]
+
+Options:
+
+  -v | --version
+  Show version information
+
+Commands:
+
+  config       view change/add settings
+  deserialize  Deserialize text copid from QQ web, then serialize them into a xml file
+
+Use "MemberAnalyzer.exe [command] --help" for more information about a command.
+```
 如果没有, 就是整错了
 
 ## Usage
@@ -188,16 +203,16 @@ Project Link: [https://github.com/Yuan-Quan/MemberAnalyzer](https://github.com/Y
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Yuan-Quan/repo.svg?style=flat-square
-[contributors-url]: https://github.com/Yuan-Quan/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Yuan-Quan/repo.svg?style=flat-square
-[forks-url]: https://github.com/Yuan-Quan/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/Yuan-Quan/repo.svg?style=flat-square
-[stars-url]: https://github.com/Yuan-Quan/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Yuan-Quan/repo.svg?style=flat-square
-[issues-url]: https://github.com/Yuan-Quan/repo/issues
-[license-shield]: https://img.shields.io/github/license/Yuan-Quan/repo.svg?style=flat-square
-[license-url]: https://github.com/Yuan-Quan/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Yuan-Quan/MemberAnalyzer.svg?style=flat-square
+[contributors-url]: https://github.com/Yuan-Quan/MemberAnalyzer/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Yuan-Quan/MemberAnalyzer.svg?style=flat-square
+[forks-url]: https://github.com/Yuan-Quan/MemberAnalyzer/network/members
+[stars-shield]: https://img.shields.io/github/stars/Yuan-Quan/MemberAnalyzer.svg?style=flat-square
+[stars-url]: https://github.com/Yuan-Quan/MemberAnalyzer/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Yuan-Quan/MemberAnalyzer.svg?style=flat-square
+[issues-url]: https://github.com/Yuan-Quan/MemberAnalyzer/issues
+[license-shield]: https://img.shields.io/github/license/Yuan-Quan/MemberAnalyzer.svg?style=flat-square
+[license-url]: https://github.com/Yuan-Quan/MemberAnalyzer/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/Yuan-Quan
 [product-screenshot]: images/screenshot.png
