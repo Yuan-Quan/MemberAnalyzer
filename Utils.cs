@@ -73,7 +73,7 @@ namespace MemberAnalyzer.Util
 
             foreach (var key in appSettings.AllKeys)
             {
-                yield return new Setting(key, appSettings[key].Split(',')[0], appSettings[key].Split(',')[1]);
+                yield return new Setting(key, appSettings[key].Split('^')[0], appSettings[key].Split('^')[1]);
             }
         }
 
@@ -142,7 +142,7 @@ namespace MemberAnalyzer.Util
                 }
                 else
                 {
-                    settings[key].Value = ""+value+","+settings[key].Value.Split(',')[1];
+                    settings[key].Value = ""+value+"^"+settings[key].Value.Split('^')[1];
                     
                 }
                 configFile.Save(ConfigurationSaveMode.Modified);

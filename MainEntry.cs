@@ -48,7 +48,7 @@ public class MainEntry
 
         static void ConfigRemove(string k, string v)
         {
-            Console.WriteLine("Too lazy to write it. Just goto App.config and delete it.");
+            Console.WriteLine("Too lazy to implement it. Just goto App.config and delete it.");
             throw new NotImplementedException();
         }
 
