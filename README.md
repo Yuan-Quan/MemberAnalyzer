@@ -35,7 +35,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Yuan-Quan/MemberAnalyzer">
-    <img src="images/LOGO.jpg" alt="Logo" width="120" height="120">
+    <img src="images/LOGO.jpg" alt="Logo" width="160" height="160">
   </a>
 
   <h3 align="center">MEMBER ANALYZER</h3>
