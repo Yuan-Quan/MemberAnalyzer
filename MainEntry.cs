@@ -91,17 +91,17 @@ public class MainEntry
         }
     }
 
-    [Command(Name = "deserilize",
-    Usage = "deserilize [path]\nexample: deserialize ~/ToProcess.txt",
-    Description = "Deserilize text copid from QQ web, then serilize them into a xml file",
-    ExtendedHelpText = "Deserilize text copid from QQ web, then serilize them into a xml file.\nfile:\tstring@path\tplain text file you want to deserilize\nsave:\tstring@path\twhere do you want to save serilized xml file(current directory by default)")]
-    public void DeserilizeAndSerilize(
+    [Command(Name = "deserialize",
+    Usage = "deserialize [path]\nexample: deserialize ~/ToProcess.txt",
+    Description = "Deserialize text copid from QQ web, then serialize them into a xml file",
+    ExtendedHelpText = "Deserialize text copid from QQ web, then serialize them into a xml file.\nfile:\tstring@path\tplain text file you want to deserialize\nsave:\tstring@path\twhere do you want to save serialized xml file(current directory by default)")]
+    public void DeserializeAndSerialize(
         [Option(LongName = "file", ShortName = "f", 
-        Description = "Plaintext file you want to deserilize")] 
+        Description = "Plaintext file you want to deserialize")] 
         string orgPath,
 
         [Option(LongName = "save", ShortName = "s", 
-        Description = "Whrer to save serilized xml file(current directory by default)")] 
+        Description = "Whrer to save serialized xml file(current directory by default)")] 
         string dstPath = null
         )
     {
@@ -114,7 +114,7 @@ public class MainEntry
         
         preForegroundColor = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("text file deserilized successfully!!");
+        Console.WriteLine("text file deserialized successfully!!");
         Console.ForegroundColor = preForegroundColor;
         
         if (File.Exists(Path.Combine(dstPath, "Members.xml")))
