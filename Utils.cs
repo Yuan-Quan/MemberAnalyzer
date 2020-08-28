@@ -12,6 +12,20 @@ namespace MemberAnalyzer.Util
     {
         public QMember(string Nick, string CardName, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
         {
+            if (Nick!=null)
+            {    
+                if (Nick[Nick.Length-1]=='\t')
+                {
+                    Nick = Nick.Remove(Nick.Length-1);
+                }
+            }
+            if (CardName!=null)
+            {
+                if (CardName[CardName.Length-1]=='\t')
+                {
+                    CardName = CardName.Remove(CardName.Length-1);
+                }
+            }
             this.Nick = Nick;
             this.CardName = CardName;
             this.ID = ID;
@@ -289,6 +303,7 @@ namespace MemberAnalyzer.Util
             }
             catch (System.Exception)
             {
+
                 throw new Exception("Sliced Member Info incomplete, check the \"ToProcess\" file");
             }
         }

@@ -216,4 +216,53 @@ public class MainEntry
             Console.ForegroundColor = preForegroundColor;
         }
     }
+
+    [Command(Name = "print",
+    Usage = "print [opreation] -f [xmlFilePath]\nexample: print -f ",
+    Description = "print the contnet of a xml file.",
+    ExtendedHelpText = "oprations: table text raw")]
+    public void Print(
+        string opration = null,
+        string file = null,
+        string v = null
+    )
+    {
+        switch (opration)
+        {
+            case "t":
+            case "table":
+                PrintTable(file);
+                break;
+            case "raw":
+            case "r":
+                PrintRaw(file);
+                break;
+            case "text":
+            case "tx":
+                PrintText(file);
+                break;
+            default:
+                Console.WriteLine("You must specify a way to print out datas, using [operation]\n avalible: table t raw r text tx");
+                break;
+        }
+
+        void PrintRaw(string _path)
+        {
+            foreach (var item in Util.ReadFrom(_path))
+            {
+                System.Console.WriteLine(item);
+            }
+        }
+
+        void PrintTable(string _path)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        void PrintText(string _path)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
