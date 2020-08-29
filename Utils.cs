@@ -4,9 +4,21 @@ using System.IO;
 using System.Text;
 using System.Configuration;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
+
 
 namespace MemberAnalyzer.Util
 {
+    [Serializable()]
+    [System.Xml.Serialization.XmlRoot("CarCollection")]
+    public class QMemberCollection
+    {
+        [XmlArray("ArrayOfQMember")]
+        [XmlArrayItem("QMember", typeof(QMember))]
+        public QMember[] QMembers { get; set; }
+    }
+
     [Serializable()]
     public class QMember
     {
@@ -314,6 +326,17 @@ namespace MemberAnalyzer.Util
             {
                 yield return MemberStrParser(item);
             }
+        }
+
+        public static List<QMember> QMemberDeserialize(string path)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(List<QMember>));
+            List<QMember> ls;
+            using (XmlReader reader = XmlReader.Create(path))
+            {
+                ls = (List<QMember>) ser.Deserialize(reader);
+            }
+            return ls;
         }
     }
 

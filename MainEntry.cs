@@ -223,10 +223,22 @@ public class MainEntry
     ExtendedHelpText = "oprations: table text raw")]
     public void Print(
         string opration = null,
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to print")] 
         string file = null,
-        string v = null
+        [Option(LongName = "save", ShortName = "s", 
+        Description = "save print result into an file")]
+        bool save = false,
+        [Option(LongName = "savePath", ShortName = "p", 
+        Description = "Where do you want to save the file")] 
+        string savePath = null
     )
     {
+        if (savePath==null)
+        {
+            savePath = Directory.GetCurrentDirectory();
+        }
+
         switch (opration)
         {
             case "t":
@@ -248,21 +260,53 @@ public class MainEntry
 
         void PrintRaw(string _path)
         {
+            var ls = new List<string>();
             foreach (var item in Util.ReadFrom(_path))
             {
                 System.Console.WriteLine(item);
+                if (save)
+                {
+                    ls.Add(item);
+                }
+            }
+            if (save)
+            {
+                System.Console.WriteLine($"this will be saved to {Path.Combine(savePath, Util.GetSHA1Hash(file)+".txt")}");
+                Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
             }
         }
 
         void PrintTable(string _path)
         {
-            throw new NotImplementedException();
+            var table = new ConsoleTable("昵称", "群名片", "性别", "QQ号", "入群时间", "上次发言时间");
+            foreach (var item in Util.QMemberDeserialize(_path))
+            {
+                table.AddRow(item.Nick, item.CardName, item.Gender.ToString(), item.ID, item.DateJoined, item.DateLastSpeak);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Table.Write invoked");
+            table.Write();
+            Console.WriteLine();
 
         }
 
         void PrintText(string _path)
         {
-            throw new NotImplementedException();
+            var ls = new List<string>();
+            foreach (var item in Util.QMemberDeserialize(_path))
+            {
+                System.Console.WriteLine(item.Nick+"\t"+item.CardName+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                if (save)
+                {
+                    ls.Add(item.Nick+"\t"+item.CardName+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                }
+            }
+            if (save)
+            {
+                System.Console.WriteLine($"this will be saved to {Path.Combine(savePath, Util.GetSHA1Hash(file)+".txt")}");
+                Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
+            }
         }
     }
 }

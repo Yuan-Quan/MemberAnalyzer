@@ -14,7 +14,7 @@ namespace MemberAnalyzer
         }
         static int Main(string[] args)
         {
-            Startup();
+            //Startup();
             return new AppRunner<MainEntry>()
                 .UseDefaultMiddleware()
                 .Run(args);
