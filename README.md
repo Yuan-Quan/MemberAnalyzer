@@ -101,22 +101,33 @@ __[下载运行环境](https://dotnet.microsoft.com/download)__
   
 下载完了吗? 安装好了吗? 我等你...
   
-*需要一个Console来进行指令行下的操作
-选一个自己喜欢的就行, 什么powershell, gitbash都可以
+*需要一个终端来进行指令行下的操作
+选一个自己喜欢的就行, 什么powershell, gitbash都可以  
+以powershell为例，按下windows+x键, 点击Windows Powershell即可打开
+![1](./images/1.png)
+之后需要在这个黑框框里敲指令
 
 ### Installation Guide for Windows
-什么? 你想用Linux, 自己编译一下吧
   
+#### Get a copy of this app
 [下载最新版本的本程序](https://github.com/Yuan-Quan/MemberAnalyzer/releases)
-解压到你喜欢的目录.
-为使得在任何目录都可以使用, 请把本文件夹的地址[加入PATH环境变量](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+
+#### Deploy
+解压到你喜欢的目录.  
+![2](/images/2.png)
+记下这个文件夹所在的路径, 在本例中是```C:\win-x64\```
+为使得在任何目录都可以使用, __请把本文件夹的地址加入PATH环境变量__
+计算机->右键->属性->高级系统设置, 在高级选项卡下， 有环型变量选项
+![3](/images/3.png)
+把刚刚记下的路径添加进去, 确定后重新启动Powershell
+
  
 安装成功之后, 在你的终端中键入 
 ```bash 
 $ MemberAnalyzer.exe 
 ``` 
 应该会出现帮助的内容:
-```bash
+```
 Usage: MemberAnalyzer.exe [command] [options]
 
 Options:
@@ -126,34 +137,101 @@ Options:
 
 Commands:
 
-  config       view change/add settings
-  deserialize  Deserialize text copid from QQ web, then serialize them into a xml file
+  clean          preserve profiles only of current grade
+  completeAlias  complete Alias using a given file
+  completeInfo   complete informations using content of alias
+  config         view change/add settings
+  deserialize    Deserialize text copid from QQ web, then serialize them into a xml file
+  print          print the contnet of a xml file.
 
 Use "MemberAnalyzer.exe [command] --help" for more information about a command.
 ```
-如果没有, 就是整错了
+如果没有, 就是环境变量不正确
 
 ## Usage
+
+### 生成xml文件
+
 登录QQ群官网的成员管理页面  
 用这个地址
 ```
-https://qun.qq.com/member.html#gid=
+https://qun.qq.com/member.html#gid=群号
 ```
-gid=后面写群号
+"群号"替换成群号
 
 ![eg1](/images/eg1.png)
 
-像这样把全部人都选中, 然后复制粘贴到一个新建的文本文档里面
+像这样把全部人都选中, 然后复制粘贴到一个文本文档里面
 ![eg2](/images/eg2.png)
-暂且把它叫做New Text Document.txt
+暂且把它叫做```raw.txt```
 
-打开终端, 使用本程序的 ```deserialize -f [path]``` 命令以解析这个文件  
-可选: 传入-s参数可以自定义xml文件保存位置, 否则将存在当前目录
-![eg3](/images/eg3.png)
-如图, 成功生成解析后的xml文件
+我把这个文件放在了桌面, 所以使用:
+```bash
+cd Desktop
+```
+把工作目录切换到桌面
   
-它看起来大概是这样的
+使用本程序的 ```deserialize -f [path]``` 命令以解析这个文件  
+在本例中:
+```bash
+$ MemberAnalyzer.exe deserialize -f raw.txt
+
+>text file deserialized successfully!!
+>
+>Saved your file to C:\Users\metro\Desktop\Members.xml
+```
+然后桌面上就多出了一个Members.xml
+  
+如图, 成功生成解析后的xml文件,内容大概是这样的
 ![eg4](/images/eg4.png)
+
+这个文件可以直接用Excel打开
+![4](/images/4.png)
+
+### 补全群名片
+
+获取群名片的纯文本, 可以使用QQ截图的文字提取
+![5](/images/5.png)
+把他们存到一个纯文本文件里, 一个一行
+![6](/images/6.png)
+我把它命名为```alias.txt```
+  
+使用```completeAlias -f [xml文件] -s [群名片文件]```补全群名片
+
+```bash
+MemberAnalyzer.exe completeAlias -f Members.xml -s alias.txt
+```
+
+由于用残缺的片段匹配, 显示Match failed!!需要手动编辑xml文件来补全群名片
+
+### 过滤掉非23届的群员
+
+在过滤之前要先补全所有信息
+```bash
+MemberAnalyzer.exe completeInfo -f Members.xml
+```
+群名片不规范的无法自动获取届数, 需要手动补全
+  
+使用
+```bash
+MemberAnalyzer.exe print table -f Members.xml
+```
+查看内容, 确保届数等段都填写完整了
+
+需要一个黑名单文件以过滤掉群名片设置23届但并不是23届同学
+需要屏蔽的人的QQ号, 一行一个
+例如 ```23届李昊丰想学电音``` 显然不是23届的, 把他的qq号放入黑名单文件
+![7](/images/7.png)
+我命名为```blaclist.txt```
+
+运行
+```bash
+MemberAnalyzer.exe clean -f Members.xml --blacklist blacklist.txt
+```
+
+现在, 仅有群名片正确的23届同学在名单中
+![8](/images/8.png)
+
 <!-- ROADMAP -->
 ## Roadmap
 
