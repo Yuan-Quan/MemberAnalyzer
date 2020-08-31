@@ -2,18 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
+
 
 namespace MemberAnalyzer.Util
 {
     [Serializable()]
+    [System.Xml.Serialization.XmlRoot("CarCollection")]
+    public class QMemberCollection
+    {
+        [XmlArray("ArrayOfQMember")]
+        [XmlArrayItem("QMember", typeof(QMember))]
+        public QMember[] QMembers { get; set; }
+    }
+
+    [Serializable()]
     public class QMember
     {
-        public QMember(string Nick, string CardName, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
+        public QMember(string Nick, string Alias, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
         {
+            if (Nick!=null)
+            {    
+                if (Nick[Nick.Length-1]=='\t')
+                {
+                    Nick = Nick.Remove(Nick.Length-1);
+                }
+            }
+            if (Alias!=null)
+            {
+                if (Alias[Alias.Length-1]=='\t')
+                {
+                    Alias = Alias.Remove(Alias.Length-1);
+                }
+            }
             this.Nick = Nick;
-            this.CardName = CardName;
+            this.Alias = Alias;
             this.ID = ID;
             this.DateJoined = DateJoined;
             this.DateLastSpeak = DateLastSpeak;
@@ -26,11 +53,12 @@ namespace MemberAnalyzer.Util
         }
 
         public string Nick { get; set; }
-        public string CardName { get; set; }
+        public string Alias { get; set; }
         public string ID { get; set; }
         public Gender Gender { get; set; }
         public string DateJoined { get; set; }
         public string DateLastSpeak { get; set; }
+        public bool IsMatchFaild { get; set; }
     }
 
     public enum Gender
@@ -262,19 +290,19 @@ namespace MemberAnalyzer.Util
                 
                 if (lines.Count == 3)
                 {
-                    //Have a CardName
-                    string nick, cardName, dtJoin, dtSpk, id, gender;
+                    //Have a Alias
+                    string nick, Alias, dtJoin, dtSpk, id, gender;
                     nick = lines[0];
-                    cardName = lines[1];
+                    Alias = lines[1];
                     id = lines[2].Split('\t')[0];
                     gender = lines[2].Split('\t')[1];
                     dtJoin = lines[2].Split('\t')[3];
                     dtSpk = lines[2].Split('\t')[4];
-                    return new QMember(nick, cardName, id, dtJoin, dtSpk, GetGender(gender));
+                    return new QMember(nick, Alias, id, dtJoin, dtSpk, GetGender(gender));
 
                 }else if(lines.Count == 2)
                 {
-                    //Haven't set CardName
+                    //Haven't set Alias
                     string nick, dtJoin, dtSpk, id, gender;
                     nick = lines[0];
                     id = lines[1].Split('\t')[0];
@@ -289,6 +317,7 @@ namespace MemberAnalyzer.Util
             }
             catch (System.Exception)
             {
+
                 throw new Exception("Sliced Member Info incomplete, check the \"ToProcess\" file");
             }
         }
@@ -298,6 +327,74 @@ namespace MemberAnalyzer.Util
             foreach (var item in RawMemberListSlicer(path))
             {
                 yield return MemberStrParser(item);
+            }
+        }
+
+        public static List<QMember> QMemberDeserialize(string path)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(List<QMember>));
+            List<QMember> ls;
+            using (XmlReader reader = XmlReader.Create(path))
+            {
+                ls = (List<QMember>) ser.Deserialize(reader);
+            }
+            return ls;
+        }
+
+        private static string CompareAndMatch(string str, IEnumerable<string> dst)
+        {
+            foreach (var item in dst)
+            {
+                var match = Regex.Match(str, item);
+                if (match.Success)
+                {
+                    return item;
+                }
+            }
+
+            return null;
+            
+        }
+
+        public static void GenerateXML(IEnumerable<QMember> members, String dstPath)
+        {
+            using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
+            {
+                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
+                s.Serialize(fs, members);
+            }
+            
+            System.Console.WriteLine();
+            var preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
+            Console.ForegroundColor = preForegroundColor;
+        }
+        
+        private static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
+        {
+            foreach (var item in org)
+            {
+                string fullAlias = CompareAndMatch(item.Alias, source);
+                if (fullAlias == null)
+                {
+                    //Match failed
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{item.Alias} Match failed!!");
+                    Console.ForegroundColor = preForegroundColor;
+
+                    item.IsMatchFaild = true;
+                }else
+                {
+                    item.Alias = fullAlias;
+                    //Match succeeded
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{item.Alias} successfully matched alias");
+                    Console.ForegroundColor = preForegroundColor;
+                }
+                yield return item;
             }
         }
     }

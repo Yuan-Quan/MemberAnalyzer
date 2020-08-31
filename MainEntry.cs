@@ -162,7 +162,7 @@ public class MainEntry
                             return;
                         case 3:
                             DeleteExist();
-                            GenerateXML();
+                            Util.GenerateXML(members, dstPath);
                             return;
                         default:
                             Console.WriteLine("No this option!!");
@@ -180,23 +180,8 @@ public class MainEntry
         else
         {
             //no exist file
-            GenerateXML();
+            Util.GenerateXML(members, dstPath);
             return;
-        }
-
-        void GenerateXML()
-        {
-            using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
-            {
-                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
-                s.Serialize(fs, members);
-            }
-            
-            System.Console.WriteLine();
-            preForegroundColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
-            Console.ForegroundColor = preForegroundColor;
         }
 
         void DeleteExist()
@@ -204,9 +189,9 @@ public class MainEntry
             Console.Write($"Will ");
             preForegroundColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("DELETE");
+            Console.Write("DELETE ");
             Console.ForegroundColor = preForegroundColor;
-            Console.Write($"{Path.Combine(dstPath, "Members.xml")}");
+            Console.Write($"[{Path.Combine(dstPath, "Members.xml")}]");
 
             File.Delete(Path.Combine(dstPath, "Members.xml"));
 
@@ -214,6 +199,99 @@ public class MainEntry
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nDone!");
             Console.ForegroundColor = preForegroundColor;
+        }
+    }
+
+    [Command(Name = "print",
+    Usage = "print [opreation] -f [xmlFilePath]\nexample: print -f ",
+    Description = "print the contnet of a xml file.",
+    ExtendedHelpText = "oprations: table text raw")]
+    public void Print(
+        string opration = null,
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to print")] 
+        string file = null,
+        [Option(LongName = "save", ShortName = "s", 
+        Description = "save print result into an file")]
+        bool save = false,
+        [Option(LongName = "savePath", ShortName = "p", 
+        Description = "Where do you want to save the file")] 
+        string savePath = null
+    )
+    {
+        if (savePath==null)
+        {
+            savePath = Directory.GetCurrentDirectory();
+        }
+
+        switch (opration)
+        {
+            case "t":
+            case "table":
+                PrintTable(file);
+                break;
+            case "raw":
+            case "r":
+                PrintRaw(file);
+                break;
+            case "text":
+            case "tx":
+                PrintText(file);
+                break;
+            default:
+                Console.WriteLine("You must specify a way to print out datas, using [operation]\n avalible: table t raw r text tx");
+                break;
+        }
+
+        void PrintRaw(string _path)
+        {
+            var ls = new List<string>();
+            foreach (var item in Util.ReadFrom(_path))
+            {
+                System.Console.WriteLine(item);
+                if (save)
+                {
+                    ls.Add(item);
+                }
+            }
+            if (save)
+            {
+                System.Console.WriteLine($"this will be saved to {Path.Combine(savePath, Util.GetSHA1Hash(file)+".txt")}");
+                Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
+            }
+        }
+
+        void PrintTable(string _path)
+        {
+            var table = new ConsoleTable("昵称", "群名片", "性别", "QQ号", "入群时间", "上次发言时间");
+            foreach (var item in Util.QMemberDeserialize(_path))
+            {
+                table.AddRow(item.Nick, item.Alias, item.Gender.ToString(), item.ID, item.DateJoined, item.DateLastSpeak);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Table.Write invoked");
+            table.Write();
+            Console.WriteLine();
+
+        }
+
+        void PrintText(string _path)
+        {
+            var ls = new List<string>();
+            foreach (var item in Util.QMemberDeserialize(_path))
+            {
+                System.Console.WriteLine(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                if (save)
+                {
+                    ls.Add(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                }
+            }
+            if (save)
+            {
+                System.Console.WriteLine($"this will be saved to {Path.Combine(savePath, Util.GetSHA1Hash(file)+".txt")}");
+                Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
+            }
         }
     }
 }

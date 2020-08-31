@@ -14,12 +14,12 @@ namespace MemberAnalyzer
         }
         static int Main(string[] args)
         {
-            Startup();
-            //return new AppRunner<MainEntry>()
-              //  .UseDefaultMiddleware()
-                //.Run(args);
+            //Startup();
+            return new AppRunner<MainEntry>()
+                .UseDefaultMiddleware()
+                .Run(args);
             
-            return 0;
+            //return 0;
         }
     }
 }
