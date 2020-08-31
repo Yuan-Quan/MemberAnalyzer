@@ -202,7 +202,7 @@ $ MemberAnalyzer.exe deserialize -f raw.txt
 MemberAnalyzer.exe completeAlias -f Members.xml -s alias.txt
 ```
 
-由于用残缺的片段匹配, 显示Match failed!!需要手动编辑xml文件来补全群名片
+显示Match failed!!匹配失败需要手动编辑xml文件来补全群名片
 
 ### 过滤掉非23届的群员
 
