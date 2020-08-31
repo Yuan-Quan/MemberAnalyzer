@@ -10,7 +10,8 @@ namespace MemberAnalyzer
         {
         //debug code here
         var m = new MainEntry();
-            m.CompleteAlias("C:/Users/metro/Desktop/Members.xml", "C:/Users/metro/Desktop/MatchSource.txt");
+            m.DeleteUnrelated("C:/Users/metro/Desktop/Members.xml", "C:/Users/metro/Desktop/BlackList.txt");
+            
         }
         static int Main(string[] args)
         {

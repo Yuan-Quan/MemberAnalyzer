@@ -1,338 +1,91 @@
 <?xml version="1.0"?>
 <ArrayOfQMember xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <QMember>
-    <Nick>ちゆきりん［Bailey］</Nick>
-    <Alias>22届社长电吉他/主唱钱毓宁</Alias>
-    <ID>2141394552</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/30</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>吃瓜小青年</Nick>
-    <Alias>22届贝斯/木吉他张杨博瀚</Alias>
-    <ID>2251709785</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>在逃苯基乙胺</Nick>
-    <Alias>22届栾璨宇民摇</Alias>
-    <ID>2521148600</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>安瑟十三</Nick>
-    <Alias>22届副社长电吉他胡锐</Alias>
-    <ID>3128486859</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>秋祁染</Nick>
-    <Alias>22届贝斯张靖淅</Alias>
-    <ID>3516304910</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>♆⚜修行中的 Max F⚜✡</Nick>
-    <Alias>22届口琴/主唱傅辰奕</Alias>
-    <ID>349609308</ID>
-    <Gender>Undefined</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>💮Morphia*༒</Nick>
-    <Alias>22届键盘马新浩</Alias>
-    <ID>1042811821</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>末世狙神尤莉酱</Nick>
-    <Alias>22届白凡京韵大鼓</Alias>
-    <ID>2714810546</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>_Xsi</Nick>
-    <Alias>鼓手徐珮坤</Alias>
-    <ID>2980718100</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>。</Nick>
-    <Alias>22届胡健坤acg</Alias>
-    <ID>2495049901</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>REDNALS</Nick>
-    <Alias>22届 合成器 高</Alias>
-    <ID>2586810016</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>おせ</Nick>
-    <ID>3166798723</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>一                       笙</Nick>
-    <Alias>21届 p1 啥都不会</Alias>
-    <ID>1813234442</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>public static double</Nick>
-    <Alias>21届副社长贝斯袁泉</Alias>
-    <ID>1055572628</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>あずさがわ咲太</Nick>
-    <Alias>21届社长 吉他 </Alias>
-    <ID>2106989629</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/30</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>square root of time</Nick>
-    <Alias>18届社长贾翰祥</Alias>
-    <ID>1242887631</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Dimi</Nick>
-    <ID>1727239057</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>When the feeling comes to each other</Nick>
-    <Alias>19届副社长陈大</Alias>
-    <ID>1214850579</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Peto</Nick>
-    <Alias>21届 鼓 朱可臣</Alias>
-    <ID>1046654580</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Q.</Nick>
-    <ID>1197625477</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/26</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>夜瞳</Nick>
-    <Alias>21届T2电吉他鲁</Alias>
-    <ID>2100831503</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/30</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
     <Nick>BRAND</Nick>
-    <Alias>23届李昊丰想学</Alias>
+    <Alias>23届李昊丰想学电音</Alias>
     <ID>3510399619</ID>
     <Gender>Male</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>7</AssignNo>
     <DateJoined>2020/08/26</DateJoined>
     <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>青信</Nick>
-    <Alias>21届吉他张金旋</Alias>
-    <ID>1360069403</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/26</DateJoined>
-    <DateLastSpeak>2020/08/30</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>🧀️奶酪味的小饼干🍪🌬</Nick>
-    <Alias>高一八班 陈文</Alias>
-    <ID>3136181507</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>宵眠抱玉鞍</Nick>
-    <ID>2411719629</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
     <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>Maiyi🌼</Nick>
-    <Alias>23届 买一 架子</Alias>
+    <Alias>23届买一 架子鼓</Alias>
     <ID>2068923667</ID>
     <Gender>Female</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>1</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
+    <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>墨</Nick>
-    <Alias>23届T2刘诗羽想</Alias>
+    <Alias>23届T2刘诗羽想学吉他</Alias>
     <ID>3413014066</ID>
     <Gender>Female</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>3</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
+    <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>7</Nick>
     <Alias>23届郑卓</Alias>
     <ID>2756576593</ID>
     <Gender>Female</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>8</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/28</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
+    <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>୧⍤⃝ 🐔</Nick>
     <Alias>23届p7耿弘毅</Alias>
     <ID>3440774112</ID>
     <Gender>Male</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Q群管家</Nick>
-    <ID>2854196310</ID>
-    <Gender>Undefined</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>QQ官方</Nick>
-    <ID>2854196320</ID>
-    <Gender>Undefined</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>4</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/27</DateLastSpeak>
     <IsMatchFaild>false</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>福尔摩斯看着我哭</Nick>
-    <Alias>22届 张宇</Alias>
-    <ID>1076048449</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Shift</Nick>
-    <Alias>p8陈政宇电嘤之</Alias>
-    <ID>2170216437</ID>
-    <Gender>Male</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>子夂</Nick>
-    <Alias>23届T3班 夏子力 </Alias>
+    <Alias>23届T3班夏子力想学吉他</Alias>
     <ID>2122315864</ID>
     <Gender>Male</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>0</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/30</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>池歆歆.</Nick>
-    <ID>3379065759</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/27</DateJoined>
-    <DateLastSpeak>2020/08/27</DateLastSpeak>
     <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>知安.</Nick>
-    <Alias>23届p1杨岑 吉他</Alias>
+    <Alias>23届p1杨岑吉他</Alias>
     <ID>3537415228</ID>
     <Gender>Female</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>3</AssignNo>
     <DateJoined>2020/08/27</DateJoined>
     <DateLastSpeak>2020/08/28</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
+    <IsMatchFaild>false</IsMatchFaild>
   </QMember>
   <QMember>
     <Nick>小新没有蜡笔</Nick>
-    <Alias>23届t3 吉他/打碟</Alias>
+    <Alias>23届t3吉他/打碟?彭亚琛</Alias>
     <ID>1161182158</ID>
     <Gender>Male</Gender>
+    <Grade>2023</Grade>
+    <AssignNo>5</AssignNo>
     <DateJoined>2020/08/28</DateJoined>
     <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
-  </QMember>
-  <QMember>
-    <Nick>Pluto.</Nick>
-    <Alias>23t6罗媛</Alias>
-    <ID>3245002667</ID>
-    <Gender>Female</Gender>
-    <DateJoined>2020/08/29</DateJoined>
-    <DateLastSpeak>2020/08/29</DateLastSpeak>
-    <IsMatchFaild>true</IsMatchFaild>
+    <IsMatchFaild>false</IsMatchFaild>
   </QMember>
 </ArrayOfQMember>

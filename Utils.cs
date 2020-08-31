@@ -55,6 +55,8 @@ namespace MemberAnalyzer.Util
         public string Alias { get; set; }
         public string ID { get; set; }
         public Gender Gender { get; set; }
+        public int Grade { get; set; }
+        public int AssignNo { get; set; }
         public string DateJoined { get; set; }
         public string DateLastSpeak { get; set; }
         public bool IsMatchFaild { get; set; }
@@ -357,6 +359,11 @@ namespace MemberAnalyzer.Util
 
         public static void GenerateXML(IEnumerable<QMember> members, String dstPath)
         {
+            if (File.Exists(Path.Combine(dstPath, "Members.xml")))
+            {
+                File.Delete(Path.Combine(dstPath, "Members.xml"));
+            }
+
             using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
             {
                 var s = new System.Xml.Serialization.XmlSerializer(typeof(QMember[]));
@@ -400,14 +407,92 @@ namespace MemberAnalyzer.Util
                 } else
                 {
                     var preForegroundColor = Console.ForegroundColor;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"{item.Nick} haven't set a alias yet, skiped!");
-                        Console.ForegroundColor = preForegroundColor;
-                        item.IsMatchFaild = false;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{item.Nick} doesn't have a alias yet, skiped!");
+                    Console.ForegroundColor = preForegroundColor;
+                    item.IsMatchFaild = false;
                 }
                 yield return item;
             }
+
+        }
+
+        private static int GetGrade(string str)
+        {
+            if (str.Contains("届"))
+            {
+                bool flag = Int32.TryParse(str.Substring(str.IndexOf("届")-2, 2), out int result);
+                if (flag)
+                {
+                    return result;
+                }else
+                {
+                    throw new Exception("Grade number try parse failed");
+                }
+            }else
+            {
+                //var preForegroundColor = Console.ForegroundColor;
+                //Console.ForegroundColor = ConsoleColor.Green;
+                //Console.WriteLine($"{} successfully matched alias.");
+                //Console.ForegroundColor = preForegroundColor;
+                return -1;
+            }
+        }
+
+        public static QMember CompleteGrade(QMember org)
+        {
+            if (org.Alias!=null)
+            {
+                int gd = GetGrade(org.Alias);
+                if (gd == -1)
+                {
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{org.Alias} have error parsing grade number, set to -1!!");
+                    Console.ForegroundColor = preForegroundColor;
+                }else
+                {
+                    org.Grade = 2000+gd;
+                }
+            }else
+            {
+                var preForegroundColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{org.Nick} doesn't have <Alias>");
+                Console.ForegroundColor = preForegroundColor;
+            }
+            return org;
+        }
+
+        public static QMember CompleteAssign(QMember org)
+        {
+            var flag = Int32.TryParse(org.ID.Substring(org.ID.Length-3), out int num);
+            if (flag)
+            {
+                var f = Int32.TryParse(ReadSetting("assignMax").Split("^")[0], out int assignMax);
+                if (!f)
+                {
+                    throw new Exception("Have trouble parsing. Your assignMax config should be a number less than 99");
+                }
+                org.AssignNo = num%assignMax;
+            }
+            return org;
+        }
+    
+        public static bool IsInBlacklist(QMember m, string path)
+        {
+            //Int32.TryParse(m.ID, out int id);
+            foreach (var item in ReadFrom(path))
+            {
+                //Int32.TryParse(item, out int i);
+                if (m.ID == item)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
+
 
 }
