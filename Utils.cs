@@ -356,6 +356,21 @@ namespace MemberAnalyzer.Util
             
         }
 
+        public static void GenerateXML(IEnumerable<QMember> members, String dstPath)
+        {
+            using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
+            {
+                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
+                s.Serialize(fs, members);
+            }
+            
+            System.Console.WriteLine();
+            var preForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
+            Console.ForegroundColor = preForegroundColor;
+        }
+        
         private static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
         {
             foreach (var item in org)

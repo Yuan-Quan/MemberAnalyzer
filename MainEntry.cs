@@ -162,7 +162,7 @@ public class MainEntry
                             return;
                         case 3:
                             DeleteExist();
-                            GenerateXML();
+                            Util.GenerateXML(members, dstPath);
                             return;
                         default:
                             Console.WriteLine("No this option!!");
@@ -180,23 +180,8 @@ public class MainEntry
         else
         {
             //no exist file
-            GenerateXML();
+            Util.GenerateXML(members, dstPath);
             return;
-        }
-
-        void GenerateXML()
-        {
-            using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
-            {
-                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
-                s.Serialize(fs, members);
-            }
-            
-            System.Console.WriteLine();
-            preForegroundColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
-            Console.ForegroundColor = preForegroundColor;
         }
 
         void DeleteExist()
