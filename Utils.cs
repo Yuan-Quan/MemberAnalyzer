@@ -22,7 +22,7 @@ namespace MemberAnalyzer.Util
     [Serializable()]
     public class QMember
     {
-        public QMember(string Nick, string CardName, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
+        public QMember(string Nick, string Alias, string ID, string DateJoined, string DateLastSpeak, Gender Gender)
         {
             if (Nick!=null)
             {    
@@ -31,15 +31,15 @@ namespace MemberAnalyzer.Util
                     Nick = Nick.Remove(Nick.Length-1);
                 }
             }
-            if (CardName!=null)
+            if (Alias!=null)
             {
-                if (CardName[CardName.Length-1]=='\t')
+                if (Alias[Alias.Length-1]=='\t')
                 {
-                    CardName = CardName.Remove(CardName.Length-1);
+                    Alias = Alias.Remove(Alias.Length-1);
                 }
             }
             this.Nick = Nick;
-            this.CardName = CardName;
+            this.Alias = Alias;
             this.ID = ID;
             this.DateJoined = DateJoined;
             this.DateLastSpeak = DateLastSpeak;
@@ -52,7 +52,7 @@ namespace MemberAnalyzer.Util
         }
 
         public string Nick { get; set; }
-        public string CardName { get; set; }
+        public string Alias { get; set; }
         public string ID { get; set; }
         public Gender Gender { get; set; }
         public string DateJoined { get; set; }
@@ -288,19 +288,19 @@ namespace MemberAnalyzer.Util
                 
                 if (lines.Count == 3)
                 {
-                    //Have a CardName
-                    string nick, cardName, dtJoin, dtSpk, id, gender;
+                    //Have a Alias
+                    string nick, Alias, dtJoin, dtSpk, id, gender;
                     nick = lines[0];
-                    cardName = lines[1];
+                    Alias = lines[1];
                     id = lines[2].Split('\t')[0];
                     gender = lines[2].Split('\t')[1];
                     dtJoin = lines[2].Split('\t')[3];
                     dtSpk = lines[2].Split('\t')[4];
-                    return new QMember(nick, cardName, id, dtJoin, dtSpk, GetGender(gender));
+                    return new QMember(nick, Alias, id, dtJoin, dtSpk, GetGender(gender));
 
                 }else if(lines.Count == 2)
                 {
-                    //Haven't set CardName
+                    //Haven't set Alias
                     string nick, dtJoin, dtSpk, id, gender;
                     nick = lines[0];
                     id = lines[1].Split('\t')[0];
@@ -337,6 +337,11 @@ namespace MemberAnalyzer.Util
                 ls = (List<QMember>) ser.Deserialize(reader);
             }
             return ls;
+        }
+
+        private static string CompareAndMatch()
+        {
+
         }
     }
 
