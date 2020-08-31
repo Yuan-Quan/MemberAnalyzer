@@ -162,7 +162,7 @@ public class MainEntry
                             return;
                         case 3:
                             DeleteExist();
-                            Util.GenerateXML(members, dstPath);
+                            Util.GenerateXML(members.ToArray(), dstPath);
                             return;
                         default:
                             Console.WriteLine("No this option!!");
@@ -180,7 +180,7 @@ public class MainEntry
         else
         {
             //no exist file
-            Util.GenerateXML(members, dstPath);
+            Util.GenerateXML(members.ToArray(), dstPath);
             return;
         }
 
@@ -293,5 +293,30 @@ public class MainEntry
                 Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
             }
         }
+    }
+
+    [Command(Name = "completeAlias",
+    Usage = "completeAlias -f [xmlFilePath] -s [matchSource] \nexample: completeAlias -f test.xml -s foo.txt ",
+    Description = "complete Alias using a given file",
+    ExtendedHelpText = "[matchSource] is a text file contains full alias")]
+    public void CompleteAlias(
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to complete")] 
+        string file,
+        [Option(LongName = "sourcce", ShortName = "s", 
+        Description = "source file of ailas")]
+        string source
+    )
+    {
+        var sourceL = new List<string>(Util.ReadFrom(source));
+        var members = new List<QMember>(Util.QMemberDeserialize(file));
+        var membersComped = new List<QMember>(); 
+
+        foreach (var item in Util.MatchAndComplete(members, sourceL))
+        {
+            membersComped.Add(item);
+        }
+
+        Util.GenerateXML(membersComped.ToArray(), Directory.GetCurrentDirectory());
     }
 }

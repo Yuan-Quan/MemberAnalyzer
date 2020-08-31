@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Configuration;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -330,22 +329,22 @@ namespace MemberAnalyzer.Util
             }
         }
 
-        public static List<QMember> QMemberDeserialize(string path)
+        public static IEnumerable<QMember> QMemberDeserialize(string path)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(List<QMember>));
-            List<QMember> ls;
+            QMember[] members;
+            XmlSerializer ser = new XmlSerializer(typeof(QMember[]));
             using (XmlReader reader = XmlReader.Create(path))
             {
-                ls = (List<QMember>) ser.Deserialize(reader);
+                members = (QMember[])ser.Deserialize(reader);
             }
-            return ls;
+            return members;
         }
 
         private static string CompareAndMatch(string str, IEnumerable<string> dst)
         {
             foreach (var item in dst)
             {
-                var match = Regex.Match(str, item);
+                var match = Regex.Match(item.Replace(" ",string.Empty), str.Replace(" ",string.Empty));
                 if (match.Success)
                 {
                     return item;
@@ -360,7 +359,7 @@ namespace MemberAnalyzer.Util
         {
             using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
             {
-                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
+                var s = new System.Xml.Serialization.XmlSerializer(typeof(QMember[]));
                 s.Serialize(fs, members);
             }
             
@@ -370,29 +369,41 @@ namespace MemberAnalyzer.Util
             Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
             Console.ForegroundColor = preForegroundColor;
         }
-        
-        private static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
+
+        public static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
         {
             foreach (var item in org)
             {
-                string fullAlias = CompareAndMatch(item.Alias, source);
-                if (fullAlias == null)
+                if (item.Alias!=null)
                 {
-                    //Match failed
-                    var preForegroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"{item.Alias} Match failed!!");
-                    Console.ForegroundColor = preForegroundColor;
+                    
+                    string fullAlias = CompareAndMatch(item.Alias, source);
+                    if (fullAlias == null)
+                    {
+                        //Match failed
+                        var preForegroundColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{item.Alias} Match failed!!");
+                        Console.ForegroundColor = preForegroundColor;
 
-                    item.IsMatchFaild = true;
-                }else
+                        item.IsMatchFaild = true;
+                    }else
+                    {
+                        item.Alias = fullAlias;
+                        //Match succeeded
+                        var preForegroundColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"{item.Alias} successfully matched alias.");
+                        Console.ForegroundColor = preForegroundColor;
+                        item.IsMatchFaild = false;
+                    }
+                } else
                 {
-                    item.Alias = fullAlias;
-                    //Match succeeded
                     var preForegroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{item.Alias} successfully matched alias");
-                    Console.ForegroundColor = preForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"{item.Nick} haven't set a alias yet, skiped!");
+                        Console.ForegroundColor = preForegroundColor;
+                        item.IsMatchFaild = false;
                 }
                 yield return item;
             }
