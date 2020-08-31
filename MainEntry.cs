@@ -162,7 +162,7 @@ public class MainEntry
                             return;
                         case 3:
                             DeleteExist();
-                            Util.GenerateXML(members, dstPath);
+                            Util.GenerateXML(members.ToArray(), dstPath);
                             return;
                         default:
                             Console.WriteLine("No this option!!");
@@ -180,7 +180,7 @@ public class MainEntry
         else
         {
             //no exist file
-            Util.GenerateXML(members, dstPath);
+            Util.GenerateXML(members.ToArray(), dstPath);
             return;
         }
 
@@ -263,10 +263,10 @@ public class MainEntry
 
         void PrintTable(string _path)
         {
-            var table = new ConsoleTable("昵称", "群名片", "性别", "QQ号", "入群时间", "上次发言时间");
+            var table = new ConsoleTable("昵称", "群名片", "性别", "届数", "分配", "QQ号", "入群时间", "上次发言时间");
             foreach (var item in Util.QMemberDeserialize(_path))
             {
-                table.AddRow(item.Nick, item.Alias, item.Gender.ToString(), item.ID, item.DateJoined, item.DateLastSpeak);
+                table.AddRow(item.Nick, item.Alias, item.Gender.ToString(), item.Grade, item.AssignNo, item.ID, item.DateJoined, item.DateLastSpeak);
             }
 
             Console.WriteLine();
@@ -281,10 +281,10 @@ public class MainEntry
             var ls = new List<string>();
             foreach (var item in Util.QMemberDeserialize(_path))
             {
-                System.Console.WriteLine(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                System.Console.WriteLine(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.Grade+"\t"+item.AssignNo+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
                 if (save)
                 {
-                    ls.Add(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                    ls.Add(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.Grade+"\t"+item.AssignNo+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
                 }
             }
             if (save)
@@ -293,5 +293,81 @@ public class MainEntry
                 Util.WriteAFile(ls, savePath, Util.GetSHA1Hash(file)+".txt");
             }
         }
+    }
+
+    [Command(Name = "completeAlias",
+    Usage = "completeAlias -f [xmlFilePath] -s [matchSource] \nexample: completeAlias -f test.xml -s foo.txt ",
+    Description = "complete Alias using a given file",
+    ExtendedHelpText = "[matchSource] is a text file contains full alias")]
+    public void CompleteAlias(
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to complete")] 
+        string file,
+        [Option(LongName = "sourcce", ShortName = "s", 
+        Description = "source file of ailas")]
+        string source
+    )
+    {
+        var sourceL = new List<string>(Util.ReadFrom(source));
+        var members = new List<QMember>(Util.QMemberDeserialize(file));
+        var membersComped = new List<QMember>(); 
+
+        foreach (var item in Util.MatchAndComplete(members, sourceL))
+        {
+            membersComped.Add(item);
+        }
+
+        Util.GenerateXML(membersComped.ToArray(), Directory.GetCurrentDirectory());
+    }
+
+    [Command(Name = "completeInfo",
+    Usage = "completeInfo -f [xmlFilePath] \nexample: completeInfo -f Members.xml ",
+    Description = "complete informations using content of alias",
+    ExtendedHelpText = "will complete <Grade> and <AssignNO>")]
+    public void CompleteInfo(
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to complete")] 
+        string file
+    )
+    {
+        var ls = new List<QMember>(Util.QMemberDeserialize(file));
+        var lsDst = new List<QMember>();
+        foreach (var item in ls)
+        {
+            var i = Util.CompleteGrade(item);
+            i = Util.CompleteAssign(i);
+            lsDst.Add(i);
+        }
+        Util.GenerateXML(lsDst.ToArray(), Directory.GetCurrentDirectory());
+    }
+
+    [Command(Name = "clean",
+    Usage = "clean -f [xmlFilePath] \nexample: clean -f Members.xml ",
+    Description = "preserve profiles only of current grade",
+    ExtendedHelpText = "Use: \'config set ")]
+    public void DeleteUnrelated(
+        [Option(LongName = "file", ShortName = "f", 
+        Description = "xml file you want to clean")] 
+        string file,
+        [Option(LongName = "blacklist", ShortName = "b", 
+        Description = "blacklist file, qq numbers.")] 
+        string pathBlack
+    )
+    {
+        var f = Int32.TryParse(Util.ReadSetting("gradeOf").Split("^")[0], out int gradeOf);
+        if (!f)
+        {
+            throw new Exception("Have trouble parsing. Your gradeOf config err");
+        }
+        var ls = new List<QMember>(Util.QMemberDeserialize(file));
+        var lsDst = new List<QMember>();
+        foreach (var item in ls)
+        {
+            if ((item.Grade == gradeOf)&&(!Util.IsInBlacklist(item, pathBlack)))
+            {
+                lsDst.Add(item);
+            }
+        }
+        Util.GenerateXML(lsDst.ToArray(), Directory.GetCurrentDirectory());
     }
 }

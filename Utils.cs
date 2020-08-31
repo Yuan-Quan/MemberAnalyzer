@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Configuration;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -56,6 +55,8 @@ namespace MemberAnalyzer.Util
         public string Alias { get; set; }
         public string ID { get; set; }
         public Gender Gender { get; set; }
+        public int Grade { get; set; }
+        public int AssignNo { get; set; }
         public string DateJoined { get; set; }
         public string DateLastSpeak { get; set; }
         public bool IsMatchFaild { get; set; }
@@ -330,22 +331,22 @@ namespace MemberAnalyzer.Util
             }
         }
 
-        public static List<QMember> QMemberDeserialize(string path)
+        public static IEnumerable<QMember> QMemberDeserialize(string path)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(List<QMember>));
-            List<QMember> ls;
+            QMember[] members;
+            XmlSerializer ser = new XmlSerializer(typeof(QMember[]));
             using (XmlReader reader = XmlReader.Create(path))
             {
-                ls = (List<QMember>) ser.Deserialize(reader);
+                members = (QMember[])ser.Deserialize(reader);
             }
-            return ls;
+            return members;
         }
 
         private static string CompareAndMatch(string str, IEnumerable<string> dst)
         {
             foreach (var item in dst)
             {
-                var match = Regex.Match(str, item);
+                var match = Regex.Match(item.Replace(" ",string.Empty), str.Replace(" ",string.Empty));
                 if (match.Success)
                 {
                     return item;
@@ -358,9 +359,14 @@ namespace MemberAnalyzer.Util
 
         public static void GenerateXML(IEnumerable<QMember> members, String dstPath)
         {
+            if (File.Exists(Path.Combine(dstPath, "Members.xml")))
+            {
+                File.Delete(Path.Combine(dstPath, "Members.xml"));
+            }
+
             using(var fs = new FileStream(Path.Combine(dstPath, "Members.xml"), FileMode.OpenOrCreate))
             {
-                var s = new System.Xml.Serialization.XmlSerializer(typeof(List<QMember>));
+                var s = new System.Xml.Serialization.XmlSerializer(typeof(QMember[]));
                 s.Serialize(fs, members);
             }
             
@@ -370,33 +376,123 @@ namespace MemberAnalyzer.Util
             Console.WriteLine($"Saved your file to {dstPath}\\Members.xml");
             Console.ForegroundColor = preForegroundColor;
         }
-        
-        private static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
+
+        public static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
         {
             foreach (var item in org)
             {
-                string fullAlias = CompareAndMatch(item.Alias, source);
-                if (fullAlias == null)
+                if (item.Alias!=null)
                 {
-                    //Match failed
-                    var preForegroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"{item.Alias} Match failed!!");
-                    Console.ForegroundColor = preForegroundColor;
+                    
+                    string fullAlias = CompareAndMatch(item.Alias, source);
+                    if (fullAlias == null)
+                    {
+                        //Match failed
+                        var preForegroundColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{item.Alias} Match failed!!");
+                        Console.ForegroundColor = preForegroundColor;
 
-                    item.IsMatchFaild = true;
-                }else
+                        item.IsMatchFaild = true;
+                    }else
+                    {
+                        item.Alias = fullAlias;
+                        //Match succeeded
+                        var preForegroundColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"{item.Alias} successfully matched alias.");
+                        Console.ForegroundColor = preForegroundColor;
+                        item.IsMatchFaild = false;
+                    }
+                } else
                 {
-                    item.Alias = fullAlias;
-                    //Match succeeded
                     var preForegroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{item.Alias} successfully matched alias");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{item.Nick} doesn't have a alias yet, skiped!");
                     Console.ForegroundColor = preForegroundColor;
+                    item.IsMatchFaild = false;
                 }
                 yield return item;
             }
+
+        }
+
+        private static int GetGrade(string str)
+        {
+            if (str.Contains("届"))
+            {
+                bool flag = Int32.TryParse(str.Substring(str.IndexOf("届")-2, 2), out int result);
+                if (flag)
+                {
+                    return result;
+                }else
+                {
+                    throw new Exception("Grade number try parse failed");
+                }
+            }else
+            {
+                //var preForegroundColor = Console.ForegroundColor;
+                //Console.ForegroundColor = ConsoleColor.Green;
+                //Console.WriteLine($"{} successfully matched alias.");
+                //Console.ForegroundColor = preForegroundColor;
+                return -1;
+            }
+        }
+
+        public static QMember CompleteGrade(QMember org)
+        {
+            if (org.Alias!=null)
+            {
+                int gd = GetGrade(org.Alias);
+                if (gd == -1)
+                {
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{org.Alias} have error parsing grade number, set to -1!!");
+                    Console.ForegroundColor = preForegroundColor;
+                }else
+                {
+                    org.Grade = 2000+gd;
+                }
+            }else
+            {
+                var preForegroundColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{org.Nick} doesn't have <Alias>");
+                Console.ForegroundColor = preForegroundColor;
+            }
+            return org;
+        }
+
+        public static QMember CompleteAssign(QMember org)
+        {
+            var flag = Int32.TryParse(org.ID.Substring(org.ID.Length-3), out int num);
+            if (flag)
+            {
+                var f = Int32.TryParse(ReadSetting("assignMax").Split("^")[0], out int assignMax);
+                if (!f)
+                {
+                    throw new Exception("Have trouble parsing. Your assignMax config should be a number less than 99");
+                }
+                org.AssignNo = num%assignMax;
+            }
+            return org;
+        }
+    
+        public static bool IsInBlacklist(QMember m, string path)
+        {
+            //Int32.TryParse(m.ID, out int id);
+            foreach (var item in ReadFrom(path))
+            {
+                //Int32.TryParse(item, out int i);
+                if (m.ID == item)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
+
 
 }
