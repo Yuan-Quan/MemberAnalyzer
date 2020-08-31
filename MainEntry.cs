@@ -204,9 +204,9 @@ public class MainEntry
             Console.Write($"Will ");
             preForegroundColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("DELETE");
+            Console.Write("DELETE ");
             Console.ForegroundColor = preForegroundColor;
-            Console.Write($"{Path.Combine(dstPath, "Members.xml")}");
+            Console.Write($"[{Path.Combine(dstPath, "Members.xml")}]");
 
             File.Delete(Path.Combine(dstPath, "Members.xml"));
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -57,6 +58,7 @@ namespace MemberAnalyzer.Util
         public Gender Gender { get; set; }
         public string DateJoined { get; set; }
         public string DateLastSpeak { get; set; }
+        public bool IsMatchFaild { get; set; }
     }
 
     public enum Gender
@@ -339,9 +341,46 @@ namespace MemberAnalyzer.Util
             return ls;
         }
 
-        private static string CompareAndMatch()
+        private static string CompareAndMatch(string str, IEnumerable<string> dst)
         {
-            throw new NotImplementedException();
+            foreach (var item in dst)
+            {
+                var match = Regex.Match(str, item);
+                if (match.Success)
+                {
+                    return item;
+                }
+            }
+
+            return null;
+            
+        }
+
+        private static IEnumerable<QMember> MatchAndComplete(IEnumerable<QMember> org,IEnumerable<string> source)
+        {
+            foreach (var item in org)
+            {
+                string fullAlias = CompareAndMatch(item.Alias, source);
+                if (fullAlias == null)
+                {
+                    //Match failed
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{item.Alias} Match failed!!");
+                    Console.ForegroundColor = preForegroundColor;
+
+                    item.IsMatchFaild = true;
+                }else
+                {
+                    item.Alias = fullAlias;
+                    //Match succeeded
+                    var preForegroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{item.Alias} successfully matched alias");
+                    Console.ForegroundColor = preForegroundColor;
+                }
+                yield return item;
+            }
         }
     }
 
