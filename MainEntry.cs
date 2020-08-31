@@ -281,7 +281,7 @@ public class MainEntry
             var table = new ConsoleTable("昵称", "群名片", "性别", "QQ号", "入群时间", "上次发言时间");
             foreach (var item in Util.QMemberDeserialize(_path))
             {
-                table.AddRow(item.Nick, item.CardName, item.Gender.ToString(), item.ID, item.DateJoined, item.DateLastSpeak);
+                table.AddRow(item.Nick, item.Alias, item.Gender.ToString(), item.ID, item.DateJoined, item.DateLastSpeak);
             }
 
             Console.WriteLine();
@@ -296,10 +296,10 @@ public class MainEntry
             var ls = new List<string>();
             foreach (var item in Util.QMemberDeserialize(_path))
             {
-                System.Console.WriteLine(item.Nick+"\t"+item.CardName+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                System.Console.WriteLine(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
                 if (save)
                 {
-                    ls.Add(item.Nick+"\t"+item.CardName+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
+                    ls.Add(item.Nick+"\t"+item.Alias+"\t"+item.Gender.ToString()+"\t"+item.ID+"\t"+item.DateJoined+"\t"+item.DateLastSpeak);
                 }
             }
             if (save)

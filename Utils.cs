@@ -341,7 +341,7 @@ namespace MemberAnalyzer.Util
 
         private static string CompareAndMatch()
         {
-
+            throw new NotImplementedException();
         }
     }
 
